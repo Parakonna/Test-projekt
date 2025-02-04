@@ -1,22 +1,15 @@
-import ContactForm from './components/ContactForm/ContactForm.jsx';
-import SearchBox from './components/SearchBox/SearchBox.jsx';
-import ContactList from './components/ContactList/ContactList.jsx';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchContacts } from './redux/contactsOps.js';
+import Shop from './components/Shop/Shop';
+
+import WaterRatioPanel from './components/WaterRatioPanel/WaterRatioPanel';
+
+import Slis from './components/Slis/Slis';
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
   return (
     <div>
-      <h1 style={{ marginLeft: '40px' }}>Phonebook</h1>
-      <ContactForm />
-      <SearchBox />
-      <ContactList />
+      {/*   <Shop /> */}
+      <WaterRatioPanel />
+      <Slis />
     </div>
   );
 }
