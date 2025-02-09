@@ -7,24 +7,27 @@ import css from './Slis.module.css';
 
 const Slis = () => {
   const [waterData, setWaterData] = useState({
-    norma: 2000, // Отримуємо з БД
-    percentage: 40, // Отримуємо з БД
+    norma: '1.5L', // норма приходить у форматі "1.5L"
+    percentage: '40%', // відсоток приходить у форматі "40%"
   });
+  /*  const [isModalOpen, setIsModalOpen] = useState(false); */
 
-  const step = (250 * 100) / waterData.norma;
+  // Перетворюємо значення в числа
+  const norma = parseFloat(waterData.norma) * 1000; // 1.5L → 1500 мл
+  const percentage = Number(parseFloat(waterData.percentage).toFixed(1)) || 0;
 
+  // Крок для шкали (наприклад, 250 мл)
+  const step = (250 * 100) / norma; // Формула для розрахунку кроку в %
+
+  // Обробка зміни значення слайдера
   const onChange = value => {
+    const roundedValue = Number(value.toFixed(1)); // Округлюємо до 1 знаку після коми
     setWaterData({
       ...waterData,
-      percentage: value,
+      percentage: `${roundedValue}%`,
     });
-    /*  savePercentageToDB(value); */
+    /* savePercentageToDB(roundedValue); */ // Збереження у БД (якщо потрібно)
   };
-
-  const percentage = parseInt(waterData.percentage, 10) || 0;
-  console.log(waterData);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className={css.section}>
@@ -58,10 +61,21 @@ const Slis = () => {
           <GrAddCircle className={css.icon_btn} />
           <span>Add Water</span>
         </button>
-        {isModalOpen && <></>}
+        {/*  {isModalOpen && (
+          <TodayListModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            operationType="add"
+          />
+        )} */}
       </div>
     </div>
   );
 };
+
+/* https://github.com/remezovskyi2508/h2o-tracker-ui/pull/13 
+// https://github.com/remezovskyi2508/h2o-tracker-ui/pull/13*/
+/* https://github.com/remezovskyi2508/h2o-tracker-ui/pull/22*/
+/* https://github.com/remezovskyi2508/h2o-tracker-ui/pull/40 */
 
 export default Slis;

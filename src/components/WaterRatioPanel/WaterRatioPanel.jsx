@@ -1,61 +1,41 @@
-/* import axios from 'axios';
-import { useEffect } from 'react'; */
 import { useState } from 'react';
 import { GrAddCircle } from 'react-icons/gr';
 import { IoIosRemove } from 'react-icons/io';
 
 import css from './WaterRatioPanel.module.css';
 
+import UserLogoModal from '../UserLogoModal/UserLogoModal';
+/* import TodayListModal from '../TodayListModal/TodayListModal';
+import { useSelector } from 'react-redux';
+import { selectWater } from '../../redux/water/selectors'; */
+
 const WaterRatioPanel = () => {
+  /*  const water = useSelector(selectWater); */
+
   const [waterData, setWaterData] = useState({
-    norma: 2500,
-    actual: 600,
+    percentage: '70%',
   });
-  console.log(setWaterData);
-
-  /* const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
- */
   const [isModalOpen, setIsModalOpen] = useState(false);
-  /* const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split('T')[0],
-  ); */
 
-  const date = new Date().toISOString().slice(0, 16);
-  console.log(date);
-  /*  useEffect(() => {
-    axios
-      .get(`http://localhost:3000/water-intake?date=${selectedDate}`);
-      .then(response => {
-        setWaterData(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.log(error);
-        setError('Помилка завантаження даних');
-        setLoading(false);
-      });
-  }, [selectedDate]);
-
-  if (loading) return <p>Завантаження...</p>;
-  if (error) return <p>{error}</p>; */
-
-  const percentage = Math.round((waterData.actual / waterData.norma) * 100);
+  const percentage = Number(parseFloat(waterData.percentage).toFixed(1)) || 0;
 
   return (
     <div className={css.section}>
       <div className={css.radio}>
         <h3 className={css.title}>Today</h3>
-        <p className={css.percentage} style={{ left: `${percentage}%` }}>
-          {percentage}%
-        </p>
         <div className={css.dial}>
+          <p className={css.percentage} style={{ left: `${percentage}%` }}>
+            {percentage}%
+          </p>
           <div
             className={css.factpercent}
             style={{ width: `${percentage}%` }}
           />
 
-          <div className={css.point} style={{ left: `${percentage}%` }} />
+          <div
+            className={css.point}
+            style={{ left: `calc(${percentage}% - 7px)` }} // Центруємо точку
+          />
         </div>
 
         <div className={css.percent}>
@@ -80,7 +60,13 @@ const WaterRatioPanel = () => {
           <GrAddCircle className={css.icon_btn} />
           <span>Add Water</span>
         </button>
-        {isModalOpen && <></>}
+        {isModalOpen && (
+          <UserLogoModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            operationType="add"
+          />
+        )}
       </div>
     </div>
   );

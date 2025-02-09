@@ -43,7 +43,7 @@ const StyledThumb = styled.div`
 `;
 
 const Thumb = (props, state) => (
-  <StyledThumb {...props} data-value={state.valueNow} />
+  <StyledThumb {...props} data-value={Number(state.valueNow.toFixed(1))} />
 );
 
 const StyledTrack = styled.div`
@@ -62,17 +62,22 @@ const StyledContainer = styled.div`
 `;
 
 const ResizableSlider = ({ percentage, onChange, step }) => {
-  /*   const [value, setValue] = useState(percentage);
+  const [value, setValue] = useState(percentage);
 
+  // Синхронізуємо значення слайдера при зміні `percentage`
   useEffect(() => {
     setValue(percentage);
-  }, [percentage]); */
+  }, [percentage]);
 
   return (
     <StyledContainer className={css.cont}>
       <StyledSlider
-        value={percentage}
-        onChange={onChange}
+        value={value}
+        onChange={newValue => {
+          const roundedValue = Number(newValue.toFixed(1)); // Округлення
+          setValue(roundedValue);
+          onChange(roundedValue);
+        }}
         step={step}
         renderTrack={Track}
         renderThumb={Thumb}
